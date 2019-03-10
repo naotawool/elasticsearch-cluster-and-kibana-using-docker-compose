@@ -1,0 +1,5 @@
+cluster.name: "docker-cluster"
+bootstrap.memory_lock: false
+path.logs: /var/log/elasticsearch
+network.host: 0.0.0.0
+node.max_local_storage_nodes: 2
