@@ -1,5 +1,11 @@
 cluster.name: "docker-cluster"
-bootstrap.memory_lock: false
+node:
+  master: true
+  data: true
+  max_local_storage_nodes: 2
+bootstrap:
+  system_call_filter: false
+  memory_lock: false
 path.logs: /var/log/elasticsearch
 network.host: 0.0.0.0
-node.max_local_storage_nodes: 2
+discovery.zen.minimum_master_nodes: 2

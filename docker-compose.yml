@@ -5,14 +5,15 @@ services:
     container_name: elasticsearch
     environment:
       - node.name=es01
-      - node.master=true
-      - node.data=true
+      - discovery.zen.ping.unicast.hosts=elasticsearch2
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
-      nproc: 65535
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
     volumes:
       - ./elasticsearch/data:/usr/share/elasticsearch/data
       - ./elasticsearch/logs:/var/log/elasticsearch
@@ -27,14 +28,15 @@ services:
     container_name: elasticsearch2
     environment:
       - node.name=es02
-      - node.data=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - discovery.zen.ping.unicast.hosts=elasticsearch
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
-      nproc: 65535
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
     volumes:
       - ./elasticsearch/data:/usr/share/elasticsearch/data
       - ./elasticsearch/logs:/var/log/elasticsearch
@@ -65,11 +67,10 @@ services:
   # kibana:
   #   image: 'docker.elastic.co/kibana/kibana:6.5.0'
   #   container_name: kibana
-  #   environment:
-  #     SERVER_NAME: localhost
-  #     ELASTICSEARCH_URL: http://localhost:9200
+  #   links:
+  #     - elasticsearch:elasticsearch
   #   ports:
-  #     - '5601:5601'
+  #     - 5601:5601
   #   networks:
   #     - esnet
 
